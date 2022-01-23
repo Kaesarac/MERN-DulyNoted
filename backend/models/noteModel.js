@@ -1,29 +1,24 @@
 const mongoose = require("mongoose");
 
-const noteSchema = mongoose.Schema(
-  {
-    title: {
-      type: String,
-      required: true,
-    },
-    content: {
-      type: String,
-      required: true,
-    },
-    category: {
-      type: String,
-      required: true,
-    },
-    user: {
-      type: mongoose.Schema.Types.ObjectId,
-      required: true,
-      ref: "User",
-    },
+const noteSchema = mongoose.Schema({
+  title: {
+    type: String,
+    required: true,
   },
-  {
-    timestamps: true,
-  }
-);
+  content: {
+    type: String,
+    required: true,
+  },
+  category: {
+    type: String,
+    required: false,
+  },
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "User",
+  },
+});
 
 const Note = mongoose.model("Note", noteSchema);
 

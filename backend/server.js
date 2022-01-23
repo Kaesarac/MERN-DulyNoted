@@ -2,28 +2,22 @@ const express = require("express");
 const res = require("express/lib/response");
 const notes = require("./data/notes");
 const connectDB = require("./config/db");
-const userRoutes = require("./routes/userRoutes");
-const noteRoutes = require("./routes/noteRoutes");
 const dotenv = require("dotenv");
 const { notFound, errorHandler } = require("./middlewares/errorMiddleware");
+const noteRoutes = require("./routes/noteRoutes");
+const userRoutes = require("./routes/userRoutes");
+const Protect = require("./middlewares/authMiddleware");
 
 const app = express();
-require("dotenv").config();
+require("dotenv").config(); //para usar environment variables do .env
 
 app.use(express.json());
-app.use("/api/users", userRoutes);
-app.use("/api/notes", noteRoutes);
-app.use("/api/users/login", userRoutes);
+app.use("/api/users", userRoutes); //rotas de usuário
+app.use("/api/users/login", Protect, userRoutes);
+app.use("/api/notes", Protect, noteRoutes); //rotas de Notes
+app.use("/api/notes/create", Protect, noteRoutes);
 
 connectDB();
-
-//app.get("/", (req, res) => {
-//  res.send("API running...");
-//});
-
-//app.get("/api/notes", (req, res) => {
-//res.json(notes);
-//});
 
 app.use(notFound);
 app.use(errorHandler);

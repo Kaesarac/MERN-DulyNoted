@@ -1,33 +1,55 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Accordion, Badge, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainScreen from "../../components/MainScreen";
-import axios from "axios";
+import { deleteNoteAction, listNotes } from "../../actions/notesActions";
+import Loading from "../../components/Loading";
+import ErrorMessage from "../../components/ErrorMessage";
 
 const MyNotes = () => {
-  const [notes, setNotes] = useState([]);
+  const dispatch = useDispatch();
+
+  const noteList = useSelector((state) => state.noteList);
+  const { loading, notes, error } = noteList;
+
+  const userLogin = useSelector((state) => state.userLogin);
+  const { userInfo } = userLogin;
+
+  const noteCreate = useSelector((state) => state.noteCreate);
+  const { success: successCreate } = noteCreate;
+
+  const noteUpdate = useSelector((state) => state.noteUpdate);
+  const { success: successUpdate } = noteUpdate;
+
+  const noteDelete = useSelector((state) => state.noteDelete);
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
+      dispatch(deleteNoteAction(id));
     }
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
-    async function fetchData() {
-      const { data } = await axios.get("/api/notes");
-      setNotes(data);
+    dispatch(listNotes());
+    if (!userInfo) {
+      navigate("/");
     }
-    fetchData();
-  }, []);
+  }, [dispatch, successCreate, navigate, userInfo, successUpdate]);
 
   return (
-    <MainScreen title="Welcome Back Ao Ghast!">
+    <MainScreen title={`Welcome Back!`}>
       <Link to="createNote">
         <Button style={{ marginLeft: 10, marginBottom: 6 }}>
           Note Something Duly
         </Button>
       </Link>
-      {notes.map((note) => (
+      {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
+
+      {loading && <Loading />}
+      {notes?.reverse().map((note) => (
         <Accordion key={note._id} flush>
           <Accordion.Item eventKey="0">
             <Card style={{ margin: 10 }}>
@@ -68,7 +90,10 @@ const MyNotes = () => {
                   <blockquote className="blockquote mb-0">
                     <p>{note.content}</p>
                     <footer className="blockquote-footer">
-                      Created On - date
+                      Created On{" "}
+                      <cite title="Source Title">
+                        {note.createdAt.substring(0, 10)}
+                      </cite>
                     </footer>
                   </blockquote>
                 </Card.Body>
