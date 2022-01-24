@@ -13,7 +13,7 @@ const Header = () => {
   const { userInfo } = userLogin;
   const logoutHandler = () => {
     dispatch(logout());
-    history.push("/");
+    history("/");
   };
 
   return (
@@ -22,16 +22,7 @@ const Header = () => {
         <Navbar.Brand href="/">DulyNoted</Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" />
         <Navbar.Collapse id="navbarScroll">
-          <Nav className="m-auto">
-            <Form className="d-flex">
-              <FormControl
-                type="search"
-                placeholder="Search"
-                className="me-2"
-                aria-label="Search"
-              />
-            </Form>
-          </Nav>
+          <Nav className="m-auto"></Nav>
           <Nav className="" style={{ maxHeight: "100px" }} navbarScroll>
             <Nav.Link href="/">Home</Nav.Link>
             <Nav.Link href="/mynotes">My Notes</Nav.Link>

@@ -1,4 +1,5 @@
 import axios from "axios";
+import api, { setToken } from "../api";
 import {
   USER_LOGIN_FAIL,
   USER_LOGIN_REQUEST,
@@ -22,11 +23,12 @@ export const login = (email, password) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
+    const { data } = await api.post(
       "/api/users/login",
       { email, password },
       config
     );
+    //setToken(data.token);
 
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
@@ -52,12 +54,12 @@ export const register = (name, email, password) => async (dispatch) => {
       },
     };
 
-    const { data } = await axios.post(
+    const { data } = await api.post(
       "/api/users",
       { name, email, password },
       config
     );
-
+    //setToken(data.token);
     dispatch({ type: USER_REGISTER_SUCCESS, payload: data });
     dispatch({ type: USER_LOGIN_SUCCESS, payload: data });
 
@@ -93,7 +95,7 @@ export const updateProfile = (user) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.post("/api/users/profile", user, config);
+    const { data } = await api.post("/api/users/profile", user, config);
 
     dispatch({ type: USER_UPDATE_SUCCESS, payload: data });
 

@@ -8,14 +8,10 @@ const { Protect } = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.post("/", function (req, res) {
-  registerUser();
-});
-router.post("/login", function (req, res) {
-  authUser();
-});
+router.post("/", registerUser);
+router.post("/login", authUser);
 router.post("/profile", function (req, res) {
-  Protect, updateUserProfile();
+  Protect, updateUserProfile(req, res);
 });
 
 module.exports = router;

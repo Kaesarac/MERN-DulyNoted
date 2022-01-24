@@ -8,13 +8,13 @@ const registerUser = asyncHandler(async (req, res) => {
 
   if (userExists) {
     res.status(400);
+    console.log(Error);
     throw new Error("User already exists");
   } else {
     const Users = await User.create({
       name,
       email,
       password,
-      pic,
     });
     if (Users) {
       res.status(201).json({
@@ -22,11 +22,11 @@ const registerUser = asyncHandler(async (req, res) => {
         name: Users.name,
         email: Users.email,
         isAdmin: Users.isAdmin,
-        pic: Users.pic,
         token: generateToken(Users.id),
       });
     } else {
       res.status(400);
+      console.log(Error);
       throw new Error("Error Occured!");
     }
   }
@@ -41,6 +41,7 @@ const authUser = asyncHandler(async (req, res) => {
     res.json({ Users, token: generateToken(Users.id) });
   } else {
     res.status(401);
+    console.log(Error);
     throw new Error("Invalid Email or Password!");
   }
 });
@@ -66,6 +67,7 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     });
   } else {
     res.status(404);
+    console.log(Error);
     throw new Error("User not found!");
   }
 });

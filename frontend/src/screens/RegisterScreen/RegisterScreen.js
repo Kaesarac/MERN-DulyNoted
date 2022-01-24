@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Form, Button, Row, Col } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import MainScreen from "../../components/MainScreen";
 import ErrorMessage from "../../components/ErrorMessage";
 import Loading from "../../components/Loading";
@@ -28,11 +28,13 @@ const RegisterScreen = (history) => {
     }
   };
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     if (userInfo) {
-      history.push("/mynotes");
+      navigate("/mynotes");
     }
-  }, [history, userInfo]);
+  }, [navigate, userInfo]);
 
   return (
     <MainScreen title="REGISTER">

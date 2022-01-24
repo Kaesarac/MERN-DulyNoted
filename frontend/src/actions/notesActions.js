@@ -1,4 +1,5 @@
 import axios from "axios";
+import api from "../api";
 import {
   NOTE_CREATE_FAIL,
   NOTE_CREATE_REQUEST,
@@ -31,7 +32,7 @@ export const createNoteAction =
         },
       };
 
-      const { data } = await axios.get(
+      const { data } = await api.post(
         `/api/notes/create`,
         { title, content, category },
         config
@@ -69,7 +70,7 @@ export const listNotes = () => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.get(`/api/notes`, config);
+    const { data } = await api.get(`/api/notes`, config);
 
     dispatch({
       type: NOTE_LIST_SUCCESS,
@@ -105,7 +106,7 @@ export const updateNoteAction =
         },
       };
 
-      const { data } = await axios.put(
+      const { data } = await api.put(
         `/api/notes/${id}`,
         { title, content, category },
         config
@@ -142,7 +143,7 @@ export const deleteNoteAction = (id) => async (dispatch, getState) => {
       },
     };
 
-    const { data } = await axios.delete(`/api/notes/${id}`, config);
+    const { data } = await api.delete(`/api/notes/${id}`, config);
 
     dispatch({
       type: NOTE_DELETE_SUCCESS,

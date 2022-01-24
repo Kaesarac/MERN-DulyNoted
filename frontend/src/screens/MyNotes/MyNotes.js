@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Accordion, Badge, Button, Card } from "react-bootstrap";
+import { Accordion, Badge, Button, Card, Stack } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import MainScreen from "../../components/MainScreen";
 import { deleteNoteAction, listNotes } from "../../actions/notesActions";
@@ -21,16 +21,14 @@ const MyNotes = () => {
 
   const noteUpdate = useSelector((state) => state.noteUpdate);
   const { success: successUpdate } = noteUpdate;
-
-  const noteDelete = useSelector((state) => state.noteDelete);
+  const navigate = useNavigate();
 
   const deleteHandler = (id) => {
     if (window.confirm("Are you sure?")) {
       dispatch(deleteNoteAction(id));
+      navigate("/");
     }
   };
-
-  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(listNotes());
@@ -67,19 +65,28 @@ const MyNotes = () => {
                     }}
                   >
                     {" "}
-                    {note.title}
+                    <Stack direction="horizontal" gap={3}>
+                      <div className="bg-light border ms-auto">
+                        {note.title}
+                      </div>
+                      <div className="bg-light border">
+                        {" "}
+                        <Button href={`/note/${note._id}`}>Edit</Button>
+                      </div>
+                      <div className="vr" />
+                      <div className="bg-light border">
+                        <Button
+                          variant="danger"
+                          className="mx-2"
+                          onClick={() => deleteHandler(note._id)}
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </Stack>
                   </span>
 
-                  <div>
-                    <Button href={`/note/${note._id}`}>Edit</Button>
-                    <Button
-                      variant="danger"
-                      className="mx-2"
-                      onClick={() => deleteHandler(note._id)}
-                    >
-                      Delete
-                    </Button>
-                  </div>
+                  <div></div>
                 </Card.Header>
               </Accordion.Header>
               <Accordion.Body>
@@ -89,12 +96,6 @@ const MyNotes = () => {
                   </h5>
                   <blockquote className="blockquote mb-0">
                     <p>{note.content}</p>
-                    <footer className="blockquote-footer">
-                      Created On{" "}
-                      <cite title="Source Title">
-                        {note.createdAt.substring(0, 10)}
-                      </cite>
-                    </footer>
                   </blockquote>
                 </Card.Body>
               </Accordion.Body>

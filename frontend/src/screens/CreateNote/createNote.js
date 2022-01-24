@@ -33,7 +33,7 @@ function CreateNote({ history }) {
     dispatch(createNoteAction(title, content, category));
 
     resetHandler();
-    navigate.push("/mynotes");
+    navigate("/mynotes");
   };
 
   return (

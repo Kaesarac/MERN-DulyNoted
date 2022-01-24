@@ -21,7 +21,6 @@ function SingleNote({ match, history }) {
   const { loading, error } = noteUpdate;
 
   const noteDelete = useSelector((state) => state.noteDelete);
-  const { loading: loadingDelete, error: errorDelete } = noteDelete;
 
   const navigate = useNavigate();
 
@@ -29,7 +28,7 @@ function SingleNote({ match, history }) {
     if (window.confirm("Are you sure?")) {
       dispatch(deleteNoteAction(id));
     }
-    navigate.push("/mynotes");
+    navigate("/mynotes");
   };
 
   useEffect(() => {
@@ -43,7 +42,7 @@ function SingleNote({ match, history }) {
     };
 
     fetching();
-  }, [match.params.id, date]);
+  });
 
   const resetHandler = () => {
     setTitle("");
@@ -57,7 +56,7 @@ function SingleNote({ match, history }) {
     if (!title || !content || !category) return;
 
     resetHandler();
-    navigate.push("/mynotes");
+    navigate("/mynotes");
   };
 
   return (
@@ -66,11 +65,8 @@ function SingleNote({ match, history }) {
         <Card.Header>Edit your Note</Card.Header>
         <Card.Body>
           <Form onSubmit={updateHandler}>
-            {loadingDelete && <Loading />}
             {error && <ErrorMessage variant="danger">{error}</ErrorMessage>}
-            {errorDelete && (
-              <ErrorMessage variant="danger">{errorDelete}</ErrorMessage>
-            )}
+
             <Form.Group controlId="title">
               <Form.Label>Title</Form.Label>
               <Form.Control

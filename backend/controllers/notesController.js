@@ -63,10 +63,6 @@ const UpdateNote = expressAsyncHandler(async (req, res) => {
 const DeleteNote = expressAsyncHandler(async (req, res) => {
   const note = await Note.findById(req.params.id);
 
-  if (note.user.toString() !== req.user.id.toString()) {
-    throw new Error("You are not authorized to perform this action.");
-  }
-
   if (note) {
     await note.remove();
     res.json({ message: "Note Removed" });
